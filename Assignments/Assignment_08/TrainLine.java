@@ -218,4 +218,66 @@ public class TrainLine {
         }
     } // method append
 
+    //Write a method `String listStations` that returns a string with names of the stations
+
+    public String listStations() { //the method name is linestations
+        if (this.head == null) {
+            System.out.print("The line is empty."); //display this message if it is completely empty aka set to null
+        } else {
+        StringBuilder sb = new StringBuilder();
+        Station current = this.head; //destination is the first empty space avaible and add more until there is no more space
+        
+        while (current != null) { //while it is not empty add more stations
+            sb.append(current.getName()); //Add each station's name to sb
+            
+            if (current.getNext() != null) {
+                sb.append();  //this will go to the next station and add it to the string
+            }
+            current = current.getNext();
+        }
+    }
+        return sb.toString(); //Return StringBuilder to a string.
+
+    }
+    //Write a method `boolean intersects(TrainLine other)` that returns `true` if the two lines cross each other and false otherwise
+    public boolean intersects(TrainLine other) {
+        if(this.head == null && other.head == null){
+            return false;
+        }
+        Station current = this.head; //the traverse method we used earlier can be used here to find the tail
+        while (current.getNext() != null) {
+            current = current.getNext();
+        } 
+        this.tail = current;
+
+        current = other.head; //using the same method to find the other trains tail
+        while (current.getNext() != null) {
+            current = current.getNext();
+        }
+        other.tail = current;
+
+        if (this.tail == other.tail) { //this will see if they intersect by having the same stations
+            return true;
+        }
+        return false; // if not return false
+    }
+    // Write a method `int CompareTo(TrainLine other)` that returns a negative value if the invoking `TrainLine` is smaller than the `other` one, zero when equal, and a positive number when greater. You can always assume that the invoking `TrainLine` is not null.
+    public int compareTo(TrainLine other) {
+        if (this.numberOfStations == other.numberOfStations) { //if they are equal set comparison value to 0
+            compare = 0;
+            if (compare != 0) { //if it is not zero the value will be positive or negative
+            while (current != null && other != null) {
+                int compare = current.getName().compareTo(other.getName());
+                if(this.numberOfStations > other.numberOfStations){ //if greater return a positive value
+                    return compare + 2;
+                }else{
+                    return compare - 1; //if not set the value to be negative
+                }
+            }
+            return compare;
+            }
+        }
+    }
 } // class TrainLine
+
+//I am thinking that if the comparisons are larger or smaller change the count to display positive or negative

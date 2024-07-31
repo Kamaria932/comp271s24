@@ -2,13 +2,16 @@ public class Hash271 {
 
     /** Default size for foundation array */
     private static final int DEFAULT_SIZE = 4;
+    private static final double THRESHOLD = 0.75;//The default value for the threshold should be 0.75 set it to private and final to never change
 
     /** Foundation array of node objects */
     Node[] foundation;
+    private int size; //the amount of nodes in the hash list
 
     /** Basic constructor */
     public Hash271(int size) {
         this.foundation = new Node[size];
+        this.size = 0; //set the size to 0
     } // basic constructor
 
     /** Default constructor */
@@ -33,11 +36,25 @@ public class Hash271 {
      * 
      * @param node Node to chain to the underlying array
      */
+    private void resize() {
+        Node[] oneFoundation = this.foundation; //new array will be called oneFoundation and it'll expand this.foundation(old foundation size)
+        int biggerSize = oneFoundation.length * 3; // Triple the size
+        this.foundation = new Node[biggerSize]; //the foundation array list will expand in size
+        this.size = 0; // Reset size to start the count over from the beginning
+
+            while (current != null) {//when the hash list is empty
+                put(current); //take the current node and place that into the hash list then get another node to add to the new array list.
+                current = current.getNext();
+            }
+        }
     public void put(Node node) {
         // Operate only is node is not null
         if (node != null) {
             // Use the node's hashcode to determine is position in
             // the underlying array
+            if ((double) size / foundation.length > THRESHOLD) {
+                resize();
+            }
             int destination = computeArrayPosition(node.hashCode());
             // If the position in the array is occupied by another node,
             // place that node under the new node we wish to insert
